@@ -1,10 +1,10 @@
-# Non-Interactive Over-Threshold Multiparty Private Set Intersection
+# Over-Threshold Multiparty Private Set Intersection for Collaborative Network Intrusion Detection
 
-This is the experimental code for the paper "Non-Interactive Over-Threshold Multiparty Private Set Intersection"
+This is the experimental code for the paper "Over-Threshold Multiparty Private Set Intersection for Collaborative Network Intrusion Detection"
 
 It includes the implementation of the protocol described in the paper, a script to run the protocol end-to-end and the benchmark scripts used to generate the graphs in the paper.
 
-Since the protocol is non-interactive, we do not test for network delays, so the participants and the aggregator do not have standalone server executables, instead the message transfer between participants and the aggregator represented as temporary files saved to the "inter_data" directory.
+This codebase implements the non-interactive deployment option, the participants and the aggregator do not have standalone server executables, instead the message transfer between participants and the aggregator represented as temporary files saved to the "inter_data" directory. The share generation benchmarks of the Collusion Safe deployment option is done by using the Mahdavi et. al.'s [implementation](https://github.com/cryspuwaterloo/OT-MP-PSI).
 
 ## Installation
 We provide instructions for using the project locally and with docker.
