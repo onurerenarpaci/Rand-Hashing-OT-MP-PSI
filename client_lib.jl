@@ -1,43 +1,6 @@
 include("utils.jl")
 using Nettle
 
-const enc_lock = ReentrantLock()
-
-function aes_key_from_numbers(keys::Vector{NumType})
-    if Base.hastypemax(NumType)
-        byte_data = reinterpret(UInt8, keys)
-        hash = sha256(byte_data)
-    else
-        byte_data = Vector{UInt8}()
-        for data in keys
-            byte_data = vcat(byte_data, digits(UInt8, data; base=256))
-        end
-        hash = sha256(byte_data)
-    end
-    return hash
-end
-
-function encrypt_element(keys::Vector{NumType}, data::NumType)::Vector{UInt8}
-    key32 = aes_key_from_numbers(keys)
-    encryptor = Encryptor("AES256", key32)
-    iv16 = rand(UInt8, 16)
-    data_bytes = reinterpret(UInt8, [data])
-    encrypted_data = encrypt(encryptor, :CBC, iv16, data_bytes)
-    return vcat(iv16, encrypted_data)
-end
-
-function encrypt_element!(encryptor::Encryptor, data::NumType, result::SubArray{UInt8, 1, Array{UInt8, 3}, Tuple{Base.Slice{Base.OneTo{Int64}}, Int64, Int64}, true})
-    rand!(result)
-    encrypted_data = encrypt!(encryptor, :CBC, Vector{UInt8}(view(result, 1:16)), view(result, 17:32) , [data])
-end
-
-function decrypt_element(keys::Vector{NumType}, data::Vector{UInt8})
-    key32 = aes_key_from_numbers(keys)
-    decryptor = Decryptor("AES256", key32)
-    decrypted_data = decrypt(decryptor, :CBC, data[1:16], data[17:end])
-    return reinterpret(NumType, decrypted_data)[1]
-end
-
 function simulate_share_array(M::NumType, t::NumType, Repeat::NumType)
     B = M*t
     seed = rint(PRIME)
@@ -124,21 +87,11 @@ function create_share_array(ips::Vector{Int}, participant_id::NumType, K::NumTyp
 
     share_arr::Array{NumType, 2} = zeros(NumType, (B, Repeat))
     order_arr::Array{NumType, 2} = zeros(NumType, (B, Repeat))
-    encrypted_arr::Array{UInt8, 3} = Array{UInt8}(undef, 32, B, Repeat)
+    plain_arr::Array{Int, 2} = zeros(Int, (B, Repeat))
 
     ip_hashes::Array{NumType, 1} = Array{NumType, 1}(undef, length(ips))
     for i in 1:length(ips)
         ip_hashes[i] = hash_func([K, r, NumType(ips[i])], PRIME)
-    end
-
-    key32 = aes_key_from_numbers([K, r])
-
-    local encryptor
-    lock(enc_lock)
-    try
-        encryptor = Encryptor("AES256", key32)
-    finally
-        unlock(enc_lock)
     end
     
     for ri in 1:Repeat
@@ -153,7 +106,7 @@ function create_share_array(ips::Vector{Int}, participant_id::NumType, K::NumTyp
             if  ( ( prev_order == 0 ) || 
                 ( (prev_order < hash_order) == is_even ) )
                 share_arr[idx, ri] = create_share(participant_id, ip_hash, [K, r, ri], threshold, prime)
-                encrypt_element!(encryptor, NumType(ips[mi]), @view encrypted_arr[:, idx, ri])
+                plain_arr[idx, ri] = ips[mi]
                 order_arr[idx, ri] = hash_order
             end
         end
@@ -173,7 +126,7 @@ function create_share_array(ips::Vector{Int}, participant_id::NumType, K::NumTyp
                 ( ( prev_order == 0 ) || 
                 ( (prev_order > hash_order) == is_even ))
                 share_arr[idx, ri] = create_share(participant_id, ip_hash, [K, r, ri], threshold, prime)
-                encrypt_element!(encryptor, NumType(ips[mi]), @view encrypted_arr[:, idx, ri])
+                plain_arr[idx, ri] = ips[mi]
                 order_arr[idx, ri] = hash_order
             end
         end       
@@ -184,10 +137,9 @@ function create_share_array(ips::Vector{Int}, participant_id::NumType, K::NumTyp
         for mi in 1:B
             if share_arr[mi, ri] == 0
                 share_arr[mi, ri] = rint(prime)
-                rand!(@view encrypted_arr[:, mi, ri])
             end
         end
     end
 
-    return share_arr, encrypted_arr
+    return share_arr, plain_arr
 end
