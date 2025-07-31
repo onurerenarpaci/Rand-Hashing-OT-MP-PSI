@@ -77,7 +77,7 @@ This script is used for generating Figures 6, 7, 8 and 9. All the inputs for eac
 ```
 
 #### Example
-``julia --project=. -t 16 benchmark_fig_6-9_reconstruction.jl -i benchmark-reconstruction-N.json``
+``julia --project=. -t 16 benchmark_fig_6-9_reconstruction.jl -i benchmark-fig-6-reconstruction-cmprsn.json``
 
 ### Share Generation Benchmark
 
@@ -92,7 +92,7 @@ This script is used for generating Figure 10 and 11. The input for these figures
 ```
 
 #### Example
-``julia --project=. -t 16 benchmark_fig_10-11_share_gen.jl -i benchmark-share-gen.json``
+``julia --project=. -t 16 benchmark_fig_10-11_share_gen.jl -i benchmark-fig-10-11-share-gen.json``
 
 
 ### Correctness Experiment

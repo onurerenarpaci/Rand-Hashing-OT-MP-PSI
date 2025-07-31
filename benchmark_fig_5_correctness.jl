@@ -44,7 +44,7 @@ for i in eachindex(reps)
     end
     
     push!(result, accumulate[])
-    display(result)
+    println("Number of arrays: ", i, " Missed intersections: ", result[i], " Expected: ", expected[i])
     df = DataFrame(reps = reps[1:i], result = result, expected = expected[1:i])
     
     mkpath("benchmark_output")

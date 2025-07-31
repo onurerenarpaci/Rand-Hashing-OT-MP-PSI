@@ -45,7 +45,7 @@ function main()
 
         ip_lists = get_ip_lists_benchmark(N, M)
 
-        bench_res = @benchmark create_share_array($ip_lists[i], $NumType(i), $K, $r, $M, $Repeat, $t, PRIME) setup=(i = rint(NumType($N-1))+1) samples=20 seconds=300
+        bench_res = @benchmark create_share_array($ip_lists[i], $NumType(i), $K, $r, $M, $Repeat, $t, PRIME) setup=(i = rint(NumType($N-1))+1) samples=20
 
         #save results
         params["mean_time"] = mean(bench_res).time
