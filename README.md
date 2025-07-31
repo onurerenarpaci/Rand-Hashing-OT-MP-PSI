@@ -66,7 +66,9 @@ You can test the full protocol by running the the `end-to-end.jl` file
 
 ### Reconstruction Benchmark
 
-The script used for benchmarking reconstruction times is `benchmark_reconstruction.jl`. It takes a JSON file as input for doing a batch of tests. The input files of the experiments in the paper is provided in the benchmark_input directory. The script outputs the results to the `benchmark_output` directory.
+The script used for benchmarking reconstruction times is `benchmark_fig_6-9_reconstruction.jl`. It takes a JSON file as input for doing a batch of tests. The input files of the experiments in the paper is provided in the benchmark_input directory. The script outputs the results to the `benchmark_output` directory.
+
+This script is used for generating Figures 6, 7, 8 and 9. All the inputs for each figure (except Figure 7) is inside the `benchmark_input` folder. Figure 7 was generated using the institutional network data provided by [Canarie](https://www.canarie.ca/about/) and we are not allowed to share this data. The benchmark results for the Mahdavi et. al. in Figure 6 is generated with their [implementation](https://github.com/cryspuwaterloo/OT-MP-PSI).
 
 #### Options
 
@@ -75,11 +77,13 @@ The script used for benchmarking reconstruction times is `benchmark_reconstructi
 ```
 
 #### Example
-``julia --project=. -t 16 benchmark_reconstruction.jl -i benchmark-reconstruction-N.json``
+``julia --project=. -t 16 benchmark_fig_6-9_reconstruction.jl -i benchmark-reconstruction-N.json``
 
 ### Share Generation Benchmark
 
-The script used for share generation reconstruction times is `benchmark_share_gen.jl`. It also takes a JSON file as input for doing a batch of tests. It outputs the results to the `benchmark_output` directory.
+The script used for share generation times is `benchmark_fig_10-11_share_gen.jl`. It also takes a JSON file as input for doing a batch of tests. It outputs the results to the `benchmark_output` directory.
+
+This script is used for generating Figure 10 and 11. The input for these figures is inside the `benchmark_input` folder. And as mentioned earlier, the Collusion Safe share generation results in Figure 10 and 11 are generated using Mahdavi et. al.'s [implementation](https://github.com/cryspuwaterloo/OT-MP-PSI).
 
 #### Options
 
@@ -88,12 +92,14 @@ The script used for share generation reconstruction times is `benchmark_share_ge
 ```
 
 #### Example
-``julia --project=. -t 16 benchmark_share_gen.jl -i benchmark-share-gen.json``
+``julia --project=. -t 16 benchmark_fig_10-11_share_gen.jl -i benchmark-share-gen.json``
 
 
 ### Correctness Experiment
 
-The script used for testing the correctness is `benchmark_correctness.jl`. It outputs the results to the `benchmark_output` directory.
+The script used for testing the correctness is `benchmark_fig_5_correctness.jl`. It outputs the results to the `benchmark_output` directory.
+
+This script is used for generating Figure 5.
 
 #### Options
 
@@ -104,7 +110,7 @@ The script used for testing the correctness is `benchmark_correctness.jl`. It ou
 ```
 
 #### Example
-``julia --project=. -t 16 benchmark_correctness.jl -m 200 -t 3 -r 10000``
+``julia --project=. -t 16 benchmark_fig_5_correctness.jl -m 200 -t 3 -r 10000``
 
 
 
