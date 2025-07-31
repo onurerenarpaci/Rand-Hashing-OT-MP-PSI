@@ -29,6 +29,22 @@ We provide instructions for using the project locally and with docker.
 ### Docker Installation
 - If you don't have a docker installation follow the instructions in https://docs.docker.com/engine/install/
 
+#### Pulling the image from DockerHub
+
+- Run the following command to pull the image from DockerHub
+
+    ``docker pull onurerenarpaci/rand-hashing-ot-mp-psi:1.0``
+
+- Run the following command to start the container
+
+    ``docker run --name otmpsi -d -it onurerenarpaci/rand-hashing-ot-mp-psi:1.0``
+
+- Run the following command to open a CLI to the container
+
+    ``docker exec -it otmpsi bash``
+
+#### Building the docker image from source
+
 - Clone the repository and `cd` into it
 
 - Run the following command to build the image
@@ -70,6 +86,8 @@ The script used for benchmarking reconstruction times is `benchmark_fig_6-9_reco
 
 This script is used for generating Figures 6, 7, 8 and 9. All the inputs for each figure (except Figure 7) is inside the `benchmark_input` folder. Figure 7 was generated using the institutional network data provided by [Canarie](https://www.canarie.ca/about/) and we are not allowed to share this data. The benchmark results for the Mahdavi et. al. in Figure 6 is generated with their [implementation](https://github.com/cryspuwaterloo/OT-MP-PSI).
 
+To quickly test the script and see and example output, you can use the `benchmark-reconstruction-test.json` file as input.
+
 #### Options
 
 ```
@@ -84,6 +102,8 @@ This script is used for generating Figures 6, 7, 8 and 9. All the inputs for eac
 The script used for share generation times is `benchmark_fig_10-11_share_gen.jl`. It also takes a JSON file as input for doing a batch of tests. It outputs the results to the `benchmark_output` directory.
 
 This script is used for generating Figure 10 and 11. The input for these figures is inside the `benchmark_input` folder. And as mentioned earlier, the Collusion Safe share generation results in Figure 10 and 11 are generated using Mahdavi et. al.'s [implementation](https://github.com/cryspuwaterloo/OT-MP-PSI).
+
+To quickly test the script and see and example output, you can use the `benchmark-share-gen-test.json` file as input.
 
 #### Options
 
